@@ -27,7 +27,9 @@ app.get("/api/health", (req, res) => {
 const distPath = path.join(__dirname, "..", "dist");
 if (fs.existsSync(distPath)) {
   app.use(express.static(distPath));
-  app.get("*", (req, res) => {
+  // Catch-all para SPA (não usar app.get('*') - Express 5 não suporta)
+  app.use((req, res) => {
+    if (req.path.startsWith("/api")) return;
     res.sendFile(path.join(distPath, "index.html"));
   });
   console.log(`👉 Servindo frontend de: ${distPath}`);
