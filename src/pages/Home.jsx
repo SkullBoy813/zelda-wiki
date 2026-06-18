@@ -133,6 +133,27 @@ export function Home() {
         </div>
       </section>
 
+      <section className="max-w-4xl mx-auto px-4 pb-16">
+        <h2 className="text-sm font-cinzel font-bold text-[var(--color-gold)] mb-4 uppercase tracking-wider glow-text-sm text-center">Tecnologias Utilizadas</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {[
+            { name: "React", desc: "Biblioteca para construção de interfaces", color: "text-sky-400" },
+            { name: "Vite", desc: "Bundler e dev server ultrarrápido", color: "text-yellow-400" },
+            { name: "Tailwind CSS", desc: "Framework de estilos utilitário", color: "text-cyan-400" },
+            { name: "Zustand", desc: "Gerenciamento de estado reativo", color: "text-amber-400" },
+            { name: "React Router", desc: "Navegação SPA entre páginas", color: "text-red-400" },
+            { name: "Zelda API", desc: "API pública da franquia Zelda", color: "text-emerald-400" },
+            { name: "Zelda Wiki", desc: "Imagens de itens via MediaWiki", color: "text-purple-400" },
+            { name: "JavaScript", desc: "Linguagem principal do projeto", color: "text-yellow-300" },
+          ].map((tech) => (
+            <Card key={tech.name}>
+              <h3 className={`text-sm font-cinzel font-bold ${tech.color} mb-1`}>{tech.name}</h3>
+              <p className="text-[11px] text-[var(--color-text-dim)]">{tech.desc}</p>
+            </Card>
+          ))}
+        </div>
+      </section>
+
       <footer className="border-t border-[var(--color-border)] py-6 text-center text-xs text-[var(--color-text-dim)] glass-dark">
         Zelda Chronicles — Uma wiki de fãs para fãs.
       </footer>
