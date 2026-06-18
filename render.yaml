@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: zelda-wiki
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: node server/index.cjs
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: JWT_SECRET
+        generateValue: true
+    healthCheckPath: /api/health
