@@ -3,6 +3,7 @@ const BASE_URL = "https://zelda.fanapis.com/api";
 const GAME_NAMES = {
   OOT: "The Legend of Zelda: Ocarina of Time",
   MM: "The Legend of Zelda: Majora's Mask",
+  LA: "The Legend of Zelda: Link's Awakening",
 };
 
 let gameIdCache = null;

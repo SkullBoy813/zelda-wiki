@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import useStore from "../../store/useStore";
 import { ThemeVariantPicker } from "../theme/ThemeVariantPicker";
+import { VARIANTS } from "../../lib/themes";
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -10,42 +11,32 @@ export function Header() {
   const loadProgressFromServer = useStore((s) => s.loadProgressFromServer);
   const loc = useLocation();
 
-  const { isOot, isMm, gameFull } = useMemo(() => {
+  const { isOot, isMm, isLa, gameFull } = useMemo(() => {
     const path = loc.pathname;
     const isOot = path === "/oot" || path.startsWith("/oot/");
     const isMm = path === "/mm" || path.startsWith("/mm/");
-    return { isOot, isMm, gameFull: isOot ? "ocarina-of-time" : isMm ? "majoras-mask" : null };
+    const isLa = path === "/la" || path.startsWith("/la/");
+    return { isOot, isMm, isLa, gameFull: isOot ? "ocarina-of-time" : isMm ? "majoras-mask" : isLa ? "links-awakening" : null };
   }, [loc.pathname]);
 
-  const themeSubtitle = isOot ? "Ocarina of Time" : isMm ? "Majora's Mask" : "Wiki & Rastreador";
+  const themeSubtitle = isOot ? "Ocarina of Time" : isMm ? "Majora's Mask" : isLa ? "Link's Awakening" : "Wiki & Rastreador";
 
   useEffect(() => {
     if (user) loadProgressFromServer();
   }, [user]);
 
   const navLinks = [
-    { to: "/oot", label: "Ocarina of Time" },
-    { to: "/mm", label: "Majora's Mask" },
-    { to: "/oot/checklists", label: "Progresso" },
+    { to: "/oot", label: "Ocarina of Time", short: "Ocarina" },
+    { to: "/mm", label: "Majora's Mask", short: "Majora" },
+    { to: "/la", label: "Link's Awakening", short: "Awakening" },
+    { to: "/oot/checklists", label: "Progresso", short: "Progresso" },
   ];
 
   return (
     <header className={`sticky top-0 z-40 border-b border-[var(--color-border)] glass-dark ${isOot ? "animate-song-of-time" : ""}`}>
       <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-3 shrink-0 group">
-          {isOot ? (
-            <svg className="w-6 h-6 text-[var(--color-gold)] drop-shadow-[0_0_6px_rgba(251,191,36,0.5)]" viewBox="0 0 24 24" fill="currentColor">
-              <polygon points="12,2 15,9 22,9 16,14 18,22 12,17 6,22 8,14 2,9 9,9" />
-            </svg>
-          ) : isMm ? (
-            <svg className="w-6 h-6 text-[var(--color-gold)] animate-mm-moon-glow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-            </svg>
-          ) : (
-            <svg className="w-6 h-6 text-[var(--color-gold)] group-hover:animate-pulse-glow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <polygon points="12,2 15,9 22,9 16,14 18,22 12,17 6,22 8,14 2,9 9,9" />
-            </svg>
-          )}
+        <Link to="/" className="flex items-center gap-2.5 shrink-0 group">
+          <img src="/favicon.png" alt="Zelda Chronicles" className="w-7 h-7 object-contain drop-shadow-[0_0_6px_rgba(var(--color-gold-rgb),0.5)]" />
           <div>
             <h1 className="text-base font-cinzel font-bold text-[var(--color-gold)] leading-tight tracking-wider glow-text-md">Zelda Chronicles</h1>
             <p className="text-[9px] text-[var(--color-text-dim)] leading-tight tracking-widest uppercase">{themeSubtitle}</p>
@@ -114,9 +105,11 @@ export function Header() {
                 onClick={() => setMenuOpen(false)}
                 className="block px-3 py-2 rounded-md text-sm text-[var(--color-text-muted)] hover:text-[var(--color-gold)] hover:bg-white/5 transition-all"
               >
-                {link.label}
+                {link.short || link.label}
               </Link>
             ))}
+            <hr className="border-[var(--color-border)] my-2" />
+            {gameFull && <MobileVariantPicker gameFull={gameFull} />}
             <hr className="border-[var(--color-border)] my-2" />
             {!loading && (
               user ? (
@@ -144,5 +137,36 @@ export function Header() {
         </div>
       )}
     </header>
+  );
+}
+
+function MobileVariantPicker({ gameFull }) {
+  const variants = useStore((s) => s.variants);
+  const setVariant = useStore((s) => s.setVariant);
+  const gameVariants = VARIANTS[gameFull];
+  const current = variants[gameFull] || "default";
+
+  if (!gameVariants) return null;
+
+  return (
+    <div className="px-3 py-2">
+      <p className="text-[10px] text-[var(--color-text-dim)] uppercase tracking-wider mb-2">Tema</p>
+      <div className="flex flex-wrap gap-1.5">
+        {Object.entries(gameVariants).map(([key, v]) => (
+          <button
+            key={key}
+            onClick={() => setVariant(gameFull, key)}
+            className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs border transition-all ${
+              current === key
+                ? "border-[var(--color-gold)] bg-[var(--color-gold)]/10 text-white"
+                : "border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-gold)]/40"
+            }`}
+          >
+            <span>{v.icon}</span>
+            <span>{v.label}</span>
+          </button>
+        ))}
+      </div>
+    </div>
   );
 }

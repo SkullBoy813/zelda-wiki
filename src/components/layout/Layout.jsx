@@ -8,18 +8,20 @@ function LayoutInner({ children }) {
   const loc = useLocation();
   const variants = useStore((s) => s.variants);
 
-  const { themeClass, variantClass, isOot, isMm, gameFull } = useMemo(() => {
+  const { themeClass, variantClass, isOot, isMm, isLa, gameFull } = useMemo(() => {
     const path = loc.pathname;
     const isOot = path === "/oot" || path.startsWith("/oot/");
     const isMm = path === "/mm" || path.startsWith("/mm/");
-    const gameFull = isOot ? "ocarina-of-time" : isMm ? "majoras-mask" : null;
+    const isLa = path === "/la" || path.startsWith("/la/");
+    const gameFull = isOot ? "ocarina-of-time" : isMm ? "majoras-mask" : isLa ? "links-awakening" : null;
     const variant = gameFull ? variants[gameFull] : null;
     const variantClass = variant && variant !== "default" ? `variant-${variant}` : "";
     return {
-      themeClass: isOot ? "theme-oot" : isMm ? "theme-mm" : "",
+      themeClass: isOot ? "theme-oot" : isMm ? "theme-mm" : isLa ? "theme-la" : "",
       variantClass,
       isOot,
       isMm,
+      isLa,
       gameFull,
     };
   }, [loc.pathname, variants]);
@@ -55,6 +57,15 @@ function LayoutInner({ children }) {
         </>
       )}
 
+      {/* LA: Bolhas do oceano + ondas */}
+      {isLa && (
+        <>
+          <div className="fixed top-[20%] right-[8%] w-3 h-3 rounded-full border border-[var(--color-blue-hylia)] opacity-[0.04] animate-ping pointer-events-none z-0" />
+          <div className="fixed bottom-[30%] left-[6%] w-2 h-2 rounded-full border border-[var(--color-seafoam, #2dd4bf)] opacity-[0.04] animate-ping pointer-events-none z-0" style={{ animationDelay: "2s" }} />
+          <div className="fixed top-[60%] right-[15%] w-4 h-4 rounded-full border border-[var(--color-blue-hylia)] opacity-[0.03] animate-ping pointer-events-none z-0" style={{ animationDelay: "4s" }} />
+        </>
+      )}
+
       {/* MM: Lua descendo + Olho da Majora + Glow sinistro */}
       {isMm && (
         <>
@@ -76,11 +87,12 @@ function LayoutInner({ children }) {
       <main className="relative z-10 animate-fade-in">{children}</main>
 
       {/* Rodapé temático (apenas em páginas de jogo) */}
-      {(isOot || isMm) && (
+      {(isOot || isMm || isLa) && (
         <footer className="relative z-10 border-t border-[var(--color-border)] py-4 text-center">
           <p className="text-[10px] text-[var(--color-text-dim)] tracking-widest uppercase">
             {isOot && "\"O fluxo do tempo é sempre cruel...\""}
-            {isMm && "\"Você encontrou um destino terrível, não encontrou?\""}
+            {isMm && "\"Você encontrou um destino terrível, não encontreu?\""}
+            {isLa && "\"A apenas um sonho... mas não se esqueça de mim.\""}
           </p>
         </footer>
       )}

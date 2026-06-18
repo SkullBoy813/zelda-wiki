@@ -1,11 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
 import { fetchAllGameData } from "../lib/api";
-import { ocarinaOfTimeData, majorasMaskData } from "../data";
+import { ocarinaOfTimeData, majorasMaskData, linksAwakeningData } from "../data";
 import { GAME_NAMES } from "../lib/api";
 
 const GAME_MAP = {
   "ocarina-of-time": { local: ocarinaOfTimeData, apiName: GAME_NAMES.OOT },
   "majoras-mask": { local: majorasMaskData, apiName: GAME_NAMES.MM },
+  "links-awakening": { local: linksAwakeningData, apiName: GAME_NAMES.LA },
 };
 
 export function useGameData(gameKey) {

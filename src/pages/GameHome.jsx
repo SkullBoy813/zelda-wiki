@@ -13,38 +13,43 @@ import { useState, useEffect } from "react";
 
 export function GameHome() {
   const loc = useLocation();
-  const game = loc.pathname === "/mm" ? "mm" : "oot";
-  const gameFull = game === "oot" ? "ocarina-of-time" : "majoras-mask";
+  const game = loc.pathname === "/mm" ? "mm" : loc.pathname === "/la" ? "la" : "oot";
+  const gameFull = game === "oot" ? "ocarina-of-time" : game === "mm" ? "majoras-mask" : "links-awakening";
   usePageTitle(GAME_LABELS[gameFull]);
   const data = gameData[gameFull];
-  const categories = progressCategories[gameFull] || [];
-  const [monsterCount, setMonsterCount] = useState(0);
-  const [monsterLoading, setMonsterLoading] = useState(true);
+  const categories = (progressCategories[gameFull] || []).filter((c) => {
+    if (c.key === "heartPieces") return data.heartPieces?.length > 0;
+    return true;
+  });
+  const [monsterCount, setMonsterCount] = useState(data.monsters?.length || 0);
+  const [monsterLoading, setMonsterLoading] = useState(!data.monsters);
   const recentlyViewed = useStore((s) => s.recentlyViewed);
   const gameRecent = recentlyViewed.filter((r) => r.game === game);
 
   useEffect(() => {
-    const apiName = GAME_NAMES[gameFull === "ocarina-of-time" ? "OOT" : "MM"];
+    if (data.monsters) { setMonsterLoading(false); return; }
+    const apiKey = game === "oot" ? "OOT" : game === "mm" ? "MM" : null;
+    if (!apiKey) { setMonsterLoading(false); return; }
+    const apiName = GAME_NAMES[apiKey];
     fetchMonsters(apiName).then((m) => {
       setMonsterCount(m.length);
       setMonsterLoading(false);
     }).catch(() => setMonsterLoading(false));
-  }, [gameFull]);
+  }, [gameFull, data.monsters]);
 
   if (!data) return null;
 
   const isOot = gameFull === "ocarina-of-time";
-  const accent = isOot ? "var(--color-gold)" : "var(--color-green-sage)";
-  const accentLabel = isOot ? "gold" : "green-sage";
-  const bannerSrc = isOot ? "/images/banner ocarina of time.jpg" : "/images/zelda majoras mask banner.jpg";
+  const isMm = gameFull === "majoras-mask";
+  const isLa = gameFull === "links-awakening";
+  const accent = isOot ? "var(--color-gold)" : isMm ? "var(--color-green-sage)" : "var(--color-blue-hylia)";
+  const accentLabel = isOot ? "gold" : isMm ? "green-sage" : "blue-hylia";
+  const bannerSrc = isOot ? "/images/banner ocarina of time.jpg" : isMm ? "/images/zelda majoras mask banner.jpg" : "/images/links awakening banner.png";
 
   return (
     <div className="min-h-[calc(100vh-3.5rem)]">
       <section className="relative overflow-hidden min-h-[280px] flex items-center">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url("${bannerSrc}")` }}
-        />
+        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url("${bannerSrc}")` }} />
         <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-bg-main)] via-[var(--color-bg-main)]/70 to-[var(--color-bg-main)]" />
 
         {/* Decoração temática OoT */}
@@ -65,7 +70,7 @@ export function GameHome() {
         )}
 
         {/* Decoração temática MM */}
-        {!isOot && (
+        {isMm && (
           <>
             <div className="absolute -top-10 -right-10 w-40 h-40 border-[20px] border-[var(--color-gold)] rounded-full opacity-[0.04] pointer-events-none" />
             <div className="absolute bottom-12 right-[8%] flex flex-col items-center opacity-[0.04] pointer-events-none">
@@ -78,12 +83,27 @@ export function GameHome() {
           </>
         )}
 
+        {/* Decoração temática LA */}
+        {isLa && (
+          <>
+            <div className="absolute top-6 left-[8%] text-[var(--color-blue-hylia)] opacity-[0.06] pointer-events-none select-none font-cinzel text-[100px] leading-none">♪</div>
+            <div className="absolute bottom-10 right-[10%] flex flex-col items-center opacity-[0.05] pointer-events-none">
+              <span className="text-[var(--color-blue-hylia)] text-2xl">🏝️</span>
+              <span className="text-[var(--color-text-dim)] text-[10px] tracking-widest mt-1">ILHA</span>
+            </div>
+            <div className="absolute top-1/3 right-[6%] w-8 h-8 rounded-full border-2 border-[var(--color-blue-hylia)] opacity-[0.06] animate-ping" />
+            <div className="absolute bottom-1/4 left-[12%] w-6 h-6 rounded-full border-2 border-[var(--color-blue-hylia)] opacity-[0.04] animate-ping" style={{ animationDelay: "1s" }} />
+          </>
+        )}
+
         <div className="relative z-10 max-w-3xl mx-auto px-4 py-16 md:py-20 text-center">
           <h1 className="text-3xl md:text-5xl font-cinzel font-bold text-[var(--color-gold)] mb-2 animate-fade-in-up glow-text-lg">
             {GAME_LABELS[gameFull]}
           </h1>
-          <p className={`text-sm text-[var(--color-text-muted)] mb-6 animate-fade-in-up stagger-2 ${isOot ? "" : "animate-mm-moon-glow"}`}>
-            {isOot ? "A Jornada do Herói do Tempo" : "Os Três Dias que Mudaram Termina"}
+          <p className="text-sm text-[var(--color-text-muted)] mb-6 animate-fade-in-up stagger-2">
+            {isOot && "A Jornada do Herói do Tempo"}
+            {isMm && "Os Três Dias que Mudaram Termina"}
+            {isLa && "O Sonho do Wind Fish na Ilha Koholint"}
           </p>
           <div className="animate-fade-in-up stagger-3">
             <SearchBar />
@@ -99,12 +119,12 @@ export function GameHome() {
           </section>
 
           {/* Tema + Links Rápidos abaixo do progresso */}
-          <div className="grid grid-cols-2 gap-4">
-            <Card>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Card className="relative z-10">
               <CardTitle>Tema</CardTitle>
               <CardContent>
                 <div className="flex flex-col gap-2">
-                  <span className="text-xs text-gray-400">Variante de cor para {isOot ? "Ocarina of Time" : "Majora's Mask"}:</span>
+                  <span className="text-xs text-gray-400">Variante de cor para {GAME_LABELS[gameFull]}:</span>
                   <ThemeVariantPicker gameFull={gameFull} />
                 </div>
               </CardContent>
@@ -116,9 +136,16 @@ export function GameHome() {
                   <Link to={`/${game}/checklists`} className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-[var(--color-text-muted)] hover:bg-white/[0.03] hover:text-white transition-all">
                     <span>✅</span> Checklists
                   </Link>
-                  <Link to={`/${game}/collectibles`} className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-[var(--color-text-muted)] hover:bg-white/[0.03] hover:text-white transition-all">
-                    <span>💎</span> Colecionáveis
-                  </Link>
+                  {data.heartPieces && (
+                <Link to={`/${game}/heart-pieces`} className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-[var(--color-text-muted)] hover:bg-white/[0.03] hover:text-white transition-all">
+                  <span>❤️</span> Corações
+                </Link>
+              )}
+              {(data.allStrayFairies || data.skulltulas || data.greatFairies) && (
+                <Link to={`/${game}/collectibles`} className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-[var(--color-text-muted)] hover:bg-white/[0.03] hover:text-white transition-all">
+                  <span>💎</span> Colecionáveis
+                </Link>
+              )}
                   <Link to="/profile" className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-[var(--color-text-muted)] hover:bg-white/[0.03] hover:text-white transition-all">
                     <span>📊</span> Perfil
                   </Link>
@@ -132,7 +159,7 @@ export function GameHome() {
         <div className="lg:col-span-3 space-y-4">
           {/* Vistos Recentemente + Citação em linha */}
           {gameRecent.length > 0 ? (
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Card>
                 <CardTitle>Visitados</CardTitle>
                 <CardContent>
@@ -166,12 +193,12 @@ export function GameHome() {
             <Card className="border-[var(--color-border)]">
               <CardContent>
                 <p className="text-xs text-[var(--color-text-dim)] italic leading-relaxed">
-                  {isOot
-                    ? "\"O fluxo do tempo é sempre cruel... sua velocidade parece diferente para cada pessoa.\""
-                    : "\"Você encontrou um destino terrível, não encontreu?\""}
-                </p>
-                <p className="text-[9px] text-[var(--color-text-dim)] mt-2 tracking-wider uppercase">
-                  — {isOot ? "Sheik" : "A Venda Misteriosa"}
+                    {isOot && "\"O fluxo do tempo é sempre cruel... sua velocidade parece diferente para cada pessoa.\""}
+                    {isMm && "\"Você encontrou um destino terrível, não encontreu?\""}
+                    {isLa && "\"A apenas um sonho... mas não se esqueça de mim.\""}
+                  </p>
+                  <p className="text-[9px] text-[var(--color-text-dim)] mt-2 tracking-wider uppercase">
+                    — {isOot ? "Sheik" : isMm ? "A Venda Misteriosa" : "Marin"}
                 </p>
               </CardContent>
             </Card>
@@ -255,24 +282,52 @@ export function GameHome() {
                     <span className="encyclopedia-icon shrink-0 self-center">🎵</span>
                     <div className="min-w-0 flex-1">
                       <h3 className="font-cinzel font-bold text-[var(--color-gold)] text-base mb-0.5">Músicas <span className="encyclopedia-count">({data.songs?.length || 0})</span></h3>
-                      <p className="text-[var(--color-text-dim)] text-xs">Canções da Ocarina</p>
+                      <p className="text-[var(--color-text-dim)] text-xs">{isOot || isMm ? "Canções da Ocarina" : "Instrumentos do Dream Shrine"}</p>
                     </div>
                   </div>
                 </Card>
               </Link>
-              <Link to={`/${game}/collectibles`}>
-                <Card className="encyclopedia-card animate-fade-in-up" glow>
-                  <div className="flex items-start gap-5">
-                    <span className="encyclopedia-icon shrink-0 self-center">💎</span>
-                    <div className="min-w-0 flex-1">
-                      <h3 className="font-cinzel font-bold text-[var(--color-gold)] text-base mb-0.5">Colecionáveis <span className="encyclopedia-count">
-                        ({isOot ? (data.heartPieces?.length || 0) + (data.skulltulas?.length || 0) + (data.greatFairies?.length || 0) : (data.heartPieces?.length || 0) + (data.allStrayFairies?.length || 0)})
-                      </span></h3>
-                      <p className="text-[var(--color-text-dim)] text-xs">Corações, Skulltulas, Fadas</p>
+              {data.heartPieces && !data.skulltulas && !data.allStrayFairies && (
+                <Link to={`/${game}/heart-pieces`}>
+                  <Card className="encyclopedia-card animate-fade-in-up" glow>
+                    <div className="flex items-start gap-5">
+                      <span className="encyclopedia-icon shrink-0 self-center">❤️</span>
+                      <div className="min-w-0 flex-1">
+                        <h3 className="font-cinzel font-bold text-[var(--color-gold)] text-base mb-0.5">Corações <span className="encyclopedia-count">({data.heartPieces?.length || 0})</span></h3>
+                        <p className="text-[var(--color-text-dim)] text-xs">Pedacinhos de coração</p>
+                      </div>
                     </div>
-                  </div>
-                </Card>
-              </Link>
+                  </Card>
+                </Link>
+              )}
+              {(data.skulltulas || data.allStrayFairies || data.greatFairies) && (
+                <Link to={`/${game}/collectibles`}>
+                  <Card className="encyclopedia-card animate-fade-in-up" glow>
+                    <div className="flex items-start gap-5">
+                      <span className="encyclopedia-icon shrink-0 self-center">💎</span>
+                      <div className="min-w-0 flex-1">
+                        <h3 className="font-cinzel font-bold text-[var(--color-gold)] text-base mb-0.5">Colecionáveis <span className="encyclopedia-count">
+                          ({isOot ? (data.heartPieces?.length || 0) + (data.skulltulas?.length || 0) + (data.greatFairies?.length || 0) : (data.heartPieces?.length || 0) + (data.allStrayFairies?.length || 0)})
+                        </span></h3>
+                        <p className="text-[var(--color-text-dim)] text-xs">Corações, Skulltulas, Fadas</p>
+                      </div>
+                    </div>
+                  </Card>
+                </Link>
+              )}
+              {data.upgrades?.length > 0 && (
+                <Link to={`/${game}/upgrades`}>
+                  <Card className="encyclopedia-card animate-fade-in-up" glow>
+                    <div className="flex items-start gap-5">
+                      <span className="encyclopedia-icon shrink-0 self-center">⬆️</span>
+                      <div className="min-w-0 flex-1">
+                        <h3 className="font-cinzel font-bold text-[var(--color-gold)] text-base mb-0.5">Upgrades <span className="encyclopedia-count">({data.upgrades.length})</span></h3>
+                        <p className="text-[var(--color-text-dim)] text-xs">Capacidade de itens, força, magia</p>
+                      </div>
+                    </div>
+                  </Card>
+                </Link>
+              )}
               <Link to={`/${game}/bosses`}>
                 <Card className="encyclopedia-card animate-fade-in-up stagger-2" glow>
                   <div className="flex items-start gap-5">
@@ -284,17 +339,44 @@ export function GameHome() {
                   </div>
                 </Card>
               </Link>
-              <Link to={`/${game}/monsters`}>
-                <Card className="encyclopedia-card animate-fade-in-up stagger-3" glow>
-                  <div className="flex items-start gap-5">
-                    <span className="encyclopedia-icon shrink-0 self-center">🐉</span>
-                    <div className="min-w-0 flex-1">
-                      <h3 className="font-cinzel font-bold text-[var(--color-gold)] text-base mb-0.5">Monstros {!monsterLoading && <span className="encyclopedia-count">({monsterCount})</span>}</h3>
-                      <p className="text-[var(--color-text-dim)] text-xs">Inimigos e criaturas</p>
+              {data.quests?.some((q) => q.tradeQuest) && (
+                <Link to={`/${game}/quests/trade-quest`}>
+                  <Card className="encyclopedia-card animate-fade-in-up" glow>
+                    <div className="flex items-start gap-5">
+                      <span className="encyclopedia-icon shrink-0 self-center">🔄</span>
+                      <div className="min-w-0 flex-1">
+                        <h3 className="font-cinzel font-bold text-[var(--color-gold)] text-base mb-0.5">Trade Quest</h3>
+                        <p className="text-[var(--color-text-dim)] text-xs">Corrente de trocas da ilha</p>
+                      </div>
                     </div>
-                  </div>
-                </Card>
-              </Link>
+                  </Card>
+                </Link>
+              )}
+              {data.monsters ? (
+                <Link to={`/${game}/monsters`}>
+                  <Card className="encyclopedia-card animate-fade-in-up stagger-3" glow>
+                    <div className="flex items-start gap-5">
+                      <span className="encyclopedia-icon shrink-0 self-center">🐉</span>
+                      <div className="min-w-0 flex-1">
+                        <h3 className="font-cinzel font-bold text-[var(--color-gold)] text-base mb-0.5">Monstros <span className="encyclopedia-count">({data.monsters.length})</span></h3>
+                        <p className="text-[var(--color-text-dim)] text-xs">Inimigos e criaturas</p>
+                      </div>
+                    </div>
+                  </Card>
+                </Link>
+              ) : (
+                <Link to={`/${game}/monsters`}>
+                  <Card className="encyclopedia-card animate-fade-in-up stagger-3" glow>
+                    <div className="flex items-start gap-5">
+                      <span className="encyclopedia-icon shrink-0 self-center">🐉</span>
+                      <div className="min-w-0 flex-1">
+                        <h3 className="font-cinzel font-bold text-[var(--color-gold)] text-base mb-0.5">Monstros {!monsterLoading && <span className="encyclopedia-count">({monsterCount})</span>}</h3>
+                        <p className="text-[var(--color-text-dim)] text-xs">Inimigos e criaturas</p>
+                      </div>
+                    </div>
+                  </Card>
+                </Link>
+              )}
             </div>
           </section>
         </div>

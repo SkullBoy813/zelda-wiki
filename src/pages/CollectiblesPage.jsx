@@ -107,12 +107,12 @@ export function CollectiblesPage() {
       </div>
 
       {/* Abas */}
-      <div className="flex gap-1 border-b border-[var(--color-border)] pb-0.5 mb-4">
+      <div className="flex gap-1 border-b border-[var(--color-border)] pb-0.5 mb-4 overflow-x-auto scrollbar-none">
         {gameTabs.map((tab) => (
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
-            className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-t-lg transition-all duration-200 border-b-2 ${
+            className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-medium rounded-t-lg transition-all duration-200 border-b-2 whitespace-nowrap ${
               activeTab === tab.key
                 ? "text-[var(--color-gold)] border-[var(--color-gold)] bg-[var(--color-gold)]/5"
                 : "text-[var(--color-text-dim)] border-transparent hover:text-[var(--color-text-muted)] hover:bg-white/[0.02]"

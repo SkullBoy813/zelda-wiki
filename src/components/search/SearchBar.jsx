@@ -20,6 +20,7 @@ const typeLabels = {
   boss: "Chefe",
   monster: "Monstro",
   place: "Local",
+  upgrade: "Upgrade",
 };
 
 export function SearchBar() {
@@ -89,6 +90,7 @@ export function SearchBar() {
     if (t === "location" || t === "place") return `/${gameRoute}/locations/${id}`;
     if (t === "quest") return `/${gameRoute}/quests/${id}`;
     if (t === "song") return `/${gameRoute}/songs/${id}`;
+    if (t === "upgrade") return `/${gameRoute}/upgrades/${id}`;
     return "/";
   };
 

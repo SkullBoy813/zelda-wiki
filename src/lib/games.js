@@ -1,11 +1,13 @@
 export const GAMES = {
   OOT: "ocarina-of-time",
   MM: "majoras-mask",
+  LA: "links-awakening",
 };
 
 export const GAME_LABELS = {
   [GAMES.OOT]: "Ocarina of Time",
   [GAMES.MM]: "Majora's Mask",
+  [GAMES.LA]: "Link's Awakening",
 };
 
 export const GAME_COLORS = {
@@ -19,9 +21,15 @@ export const GAME_COLORS = {
     secondary: "#fbbf24",
     accent: "#dc2626",
   },
+  [GAMES.LA]: {
+    primary: "#1a3a5c",
+    secondary: "#60a5fa",
+    accent: "#34d399",
+  },
 };
 
 export const GAME_ROUTES = {
   [GAMES.OOT]: "/oot",
   [GAMES.MM]: "/mm",
+  [GAMES.LA]: "/la",
 };

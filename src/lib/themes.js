@@ -11,6 +11,12 @@ export const VARIANTS = {
     "stone-tower": { id: "stone-tower", label: "Stone Tower", icon: "🗿", desc: "Cinza e místico" },
     "great-bay": { id: "great-bay", label: "Great Bay", icon: "🌊", desc: "Turquesa do oceano" },
   },
+  "links-awakening": {
+    default: { id: "default", label: "Koholint", icon: "🏝️", desc: "Azul oceano e verde ilha" },
+    "mabe-village": { id: "mabe-village", label: "Mabe Village", icon: "🏘️", desc: "Verde campestre" },
+    "animal-village": { id: "animal-village", label: "Animal Village", icon: "🐾", desc: "Dourado e acolhedor" },
+    "dream-shrine": { id: "dream-shrine", label: "Dream Shrine", icon: "✨", desc: "Roxo onírico" },
+  },
 };
 
 export const THEMES = {
@@ -80,5 +86,29 @@ export const THEMES = {
     accentColor: "#ef4444",
     mood: "sombrio, mistério, urgência",
     variants: VARIANTS["majoras-mask"],
+  },
+  la: {
+    id: "la",
+    label: "Link's Awakening",
+    subtitle: "O Sonho do Wind Fish na Ilha Koholint",
+    quote: "\"A apenas um sonho... mas não se esqueça de mim.\"",
+    quoteAuthor: "Marin",
+    gold: "#60a5fa",
+    goldRgb: "96, 165, 250",
+    sage: "#34d399",
+    sageRgb: "52, 211, 153",
+    glow: "#60a5fa",
+    glowRgb: "96, 165, 250",
+    bg: "#080e18",
+    card: "rgba(12, 22, 36, 0.6)",
+    border: "rgba(96, 165, 250, 0.15)",
+    grid: "rgba(96, 165, 250, 0.04)",
+    pattern: "rgba(96, 165, 250, 0.08)",
+    scrollbar: "rgba(96, 165, 250, 0.3)",
+    selection: "rgba(96, 165, 250, 0.3)",
+    icon: "wave",
+    accentColor: "#34d399",
+    mood: "sonho, oceano, ilha, aventura",
+    variants: VARIANTS["links-awakening"],
   },
 };

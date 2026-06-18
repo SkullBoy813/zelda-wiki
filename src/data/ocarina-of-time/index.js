@@ -8,11 +8,13 @@ import { greatFairies } from "./great-fairies";
 import { quests, questTypes } from "./quests";
 import { songs, songCategories } from "./songs";
 import { ootBosses } from "./bosses";
+import { upgrades } from "./upgrades";
 
 export const ocarinaOfTimeData = {
   game: "ocarina-of-time",
   label: "Ocarina of Time",
   items,
+  upgrades,
   itemCategories,
   characters,
   dungeons,

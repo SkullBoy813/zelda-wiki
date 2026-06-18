@@ -55,16 +55,21 @@ function GameStatsCard({ gameKey, accentColor }) {
   const rank = getRank(progress.percentage);
   const data = gameData[gameKey];
   const isOot = gameKey === "ocarina-of-time";
+  const isMm = gameKey === "majoras-mask";
+  const isLa = gameKey === "links-awakening";
   const totalCollectibles = isOot
     ? (data.heartPieces?.length || 0) + (data.skulltulas?.length || 0) + (data.greatFairies?.length || 0)
-    : (data.heartPieces?.length || 0) + (data.allStrayFairies?.length || 0);
+    : isMm
+    ? (data.heartPieces?.length || 0) + (data.allStrayFairies?.length || 0)
+    : (data.heartPieces?.length || 0);
 
-  // Calculate collectible-specific progress
   const getProgress = useStore.getState().getProgress;
   const hp = getProgress("heart-pieces", data.heartPieces || []);
   const collectibleItems = [];
 
-  if (isOot) {
+  if (isLa) {
+    collectibleItems.push({ label: "Coração", done: hp.done, total: hp.total });
+  } else if (isOot) {
     const sk = getProgress("skulltulas", data.skulltulas || []);
     const gf = getProgress("great-fairies", data.greatFairies || []);
     collectibleItems.push({ label: "Coração", done: hp.done, total: hp.total });
@@ -96,7 +101,7 @@ function GameStatsCard({ gameKey, accentColor }) {
 
         <ProgressBar value={progress.percentage} size="lg" showLabel={false} className="mb-5" />
 
-        <div className="grid grid-cols-3 gap-3 mb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
           {[{ label: "Geral", done: progress.done, total: progress.total },
             { label: "Colecionáveis", done: collectibleItems.reduce((a, c) => a + c.done, 0), total: collectibleItems.reduce((a, c) => a + c.total, 0) },
             { label: "Favoritos", done: 0, total: 0 },
@@ -146,8 +151,10 @@ export function ProfilePage() {
 
   const ootVariant = variants["ocarina-of-time"] || "default";
   const mmVariant = variants["majoras-mask"] || "default";
+  const laVariant = variants["links-awakening"] || "default";
   const ootVariants = VARIANTS["ocarina-of-time"];
   const mmVariants = VARIANTS["majoras-mask"];
+  const laVariants = VARIANTS["links-awakening"];
 
   useEffect(() => {
     if (!loading && !user) {
@@ -201,6 +208,7 @@ export function ProfilePage() {
         <div className="lg:col-span-3 space-y-6">
           <GameStatsCard gameKey="ocarina-of-time" accentColor="#fbbf24" />
           <GameStatsCard gameKey="majoras-mask" accentColor="#a78bfa" />
+          <GameStatsCard gameKey="links-awakening" accentColor="#60a5fa" />
         </div>
 
         {/* COLUNA DIREITA: Opções (2/5) */}
@@ -238,6 +246,25 @@ export function ProfilePage() {
                         onClick={() => setVariant("majoras-mask", key)}
                         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs border transition-all ${
                           mmVariant === key
+                            ? "border-[var(--color-gold)] bg-[var(--color-gold)]/10 text-white"
+                            : "border-[var(--color-border)] text-gray-400 hover:border-gray-500"
+                        }`}
+                      >
+                        <span>{v.icon}</span>
+                        <span>{v.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-xs text-gray-400 uppercase tracking-wider mb-3">Variante Link's Awakening</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {Object.entries(laVariants).map(([key, v]) => (
+                      <button
+                        key={key}
+                        onClick={() => setVariant("links-awakening", key)}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs border transition-all ${
+                          laVariant === key
                             ? "border-[var(--color-gold)] bg-[var(--color-gold)]/10 text-white"
                             : "border-[var(--color-border)] text-gray-400 hover:border-gray-500"
                         }`}

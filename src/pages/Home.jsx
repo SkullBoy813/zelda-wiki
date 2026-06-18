@@ -17,11 +17,14 @@ export function Home() {
         <div className="relative z-10">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 glass border border-[var(--color-gold)]/20 rounded-full text-sm text-[var(--color-gold)] mb-6 animate-fade-in-up">
             <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-gold)] animate-pulse" />
-            A Wiki Definitiva dos Clássicos do N64
+            A Wiki Definitiva de Zelda Clássico
           </div>
-          <h1 className="text-4xl md:text-6xl font-cinzel font-bold text-[var(--color-gold)] mb-4 animate-fade-in-up stagger-2 glow-text-lg">
-            Zelda Chronicles
-          </h1>
+          <div className="flex items-center justify-center gap-4 mb-4 animate-fade-in-up stagger-2">
+            <img src="/favicon.png" alt="Zelda Chronicles" className="w-10 h-10 md:w-14 md:h-14 object-contain drop-shadow-[0_0_8px_rgba(var(--color-gold-rgb),0.5)]" />
+            <h1 className="text-4xl md:text-6xl font-cinzel font-bold text-[var(--color-gold)] glow-text-lg">
+              Zelda Chronicles
+            </h1>
+          </div>
           <p className="text-base text-[var(--color-text-muted)] mb-8 max-w-xl mx-auto animate-fade-in-up stagger-3">
             A enciclopédia completa de Ocarina of Time e Majora's Mask com rastreador de progresso interativo.
           </p>
@@ -72,6 +75,27 @@ export function Home() {
               </div>
             </div>
           </Link>
+
+          <Link to="/la" className="group animate-fade-in-up stagger-5">
+            <div
+              className="relative rounded-xl overflow-hidden border-2 border-[var(--color-blue-hylia)]/40 hover:border-[var(--color-blue-hylia)]/80 transition-all duration-300 min-h-[160px] flex items-end"
+              style={{
+                backgroundImage: 'url("/images/links awakening banner.png")',
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-bg-main)] via-[var(--color-bg-main)]/60 to-transparent" />
+              <div className="relative p-5 w-full">
+                <h2 className="text-2xl font-cinzel font-bold text-white mb-1 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                  Link's Awakening
+                </h2>
+                <p className="text-sm text-gray-200 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+                  Colete os 8 instrumentos, encontre as conchas secretas e acorde o Wind Fish na Ilha Koholint.
+                </p>
+              </div>
+            </div>
+          </Link>
         </div>
       </section>
 
@@ -79,7 +103,7 @@ export function Home() {
       {recentlyViewed.length > 0 && (
         <section className="max-w-4xl mx-auto px-4 pb-8">
           <h2 className="text-sm font-cinzel font-bold text-[var(--color-gold)] mb-3 uppercase tracking-wider glow-text-sm">Vistos Recentemente</h2>
-          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none">
+          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none max-w-full">
             {recentlyViewed.map((item) => (
               <Link
                 key={item.id}

@@ -1,14 +1,17 @@
 import { ocarinaOfTimeData, ootProgressCategories } from "./ocarina-of-time";
 import { majorasMaskData, mmProgressCategories } from "./majoras-mask";
+import { linksAwakeningData, laProgressCategories } from "./links-awakening";
 
 export const gameData = {
   "ocarina-of-time": ocarinaOfTimeData,
   "majoras-mask": majorasMaskData,
+  "links-awakening": linksAwakeningData,
 };
 
 export const progressCategories = {
   "ocarina-of-time": ootProgressCategories,
   "majoras-mask": mmProgressCategories,
+  "links-awakening": laProgressCategories,
 };
 
 export function searchAllLocal(query) {
@@ -30,7 +33,9 @@ export function searchAllLocal(query) {
     (data.locations || []).forEach((l) => addItem(l, "location"));
     (data.quests || []).forEach((q) => addItem(q, "quest"));
     (data.songs || []).forEach((s) => addItem(s, "song"));
-    if (data.masks) (data.masks || []).forEach((m) => addItem(m, "mask"));
+    if (data.masks)     (data.masks || []).forEach((m) => addItem(m, "mask"));
+    (data.upgrades || []).forEach((u) => addItem(u, "upgrade"));
+    (data.heartPieces || []).forEach((h) => addItem({ ...h, type: "heart-piece" }, "heart-piece"));
   }
 
   for (const item of allItems) {
@@ -47,4 +52,4 @@ export function searchAllLocal(query) {
   return results.slice(0, 20);
 }
 
-export { ocarinaOfTimeData, majorasMaskData, ootProgressCategories, mmProgressCategories };
+export { ocarinaOfTimeData, majorasMaskData, linksAwakeningData, ootProgressCategories, mmProgressCategories, laProgressCategories };

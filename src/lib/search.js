@@ -34,9 +34,10 @@ async function buildSearchIndex() {
 
     // API data - try to fetch in background
     try {
-      const [oot, mm] = await Promise.allSettled([
+      const [oot, mm, la] = await Promise.allSettled([
         fetchAllGameData(GAME_NAMES.OOT),
         fetchAllGameData(GAME_NAMES.MM),
+        fetchAllGameData(GAME_NAMES.LA),
       ]);
 
       if (oot.status === "fulfilled") {
@@ -52,6 +53,13 @@ async function buildSearchIndex() {
         addItems(mm.value.dungeons, "dungeon-api", "Majora's Mask", "majoras-mask");
         addItems(mm.value.monsters, "monster", "Majora's Mask", "majoras-mask");
         addItems(mm.value.places, "place", "Majora's Mask", "majoras-mask");
+      }
+      if (la.status === "fulfilled") {
+        addItems(la.value.items, "item-api", "Link's Awakening", "links-awakening");
+        addItems(la.value.characters, "character-api", "Link's Awakening", "links-awakening");
+        addItems(la.value.dungeons, "dungeon-api", "Link's Awakening", "links-awakening");
+        addItems(la.value.monsters, "monster", "Link's Awakening", "links-awakening");
+        addItems(la.value.places, "place", "Link's Awakening", "links-awakening");
       }
     } catch {
       // Silent - API data is optional

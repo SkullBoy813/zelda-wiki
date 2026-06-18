@@ -361,6 +361,142 @@
   background: linear-gradient(90deg, #a78bfa, #ef4444) !important;
 }
 
+/* =============================================
+   THEME: LINK'S AWAKENING – Oceano, Sonho, Koholint
+   ============================================= */
+.theme-la {
+  --color-gold: #60a5fa;
+  --color-gold-rgb: 96, 165, 250;
+  --color-gold-light: #93c5fd;
+  --color-gold-dark: #2563eb;
+  --color-green-sage: #34d399;
+  --color-sage-rgb: 52, 211, 153;
+  --color-green-leaf: #10b981;
+  --color-sheikah-blue: #60a5fa;
+  --color-sheikah-cyan: #60a5fa;
+  --color-sheikah-orange: #34d399;
+  --color-sheikah-amber: #f59e0b;
+  --color-sheikah-glow: #60a5fa;
+  --color-glow-rgb: 96, 165, 250;
+  --color-blue-hylia: #60a5fa;
+  --color-border: rgba(96, 165, 250, 0.15);
+  --color-border-light: rgba(96, 165, 250, 0.3);
+  --color-bg-main: #080e18;
+  --color-bg-card: rgba(12, 22, 36, 0.6);
+  --color-bg-card-hover: rgba(16, 30, 50, 0.8);
+  --color-brown-dark: #060c14;
+  --color-brown-mid: #0e1c2e;
+  --color-text-main: #dce8fc;
+  --color-text-muted: #8ca4c8;
+  --color-text-dim: #5878a0;
+  --color-red-zelda: #dc2626;
+
+  --theme-accent: #34d399;
+  --theme-accent-rgb: 52, 211, 153;
+  --theme-ocean: #1e3a5f;
+  --theme-sky: #0f2840;
+  --theme-gradient-start: #060e1a;
+  --theme-gradient-end: #0e2038;
+  --theme-sand: #d4a574;
+  --theme-seafoam: #2dd4bf;
+}
+
+.theme-la .theme-pattern-overlay {
+  background-image:
+    radial-gradient(ellipse at 80% 20%, rgba(96, 165, 250, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 20% 80%, rgba(52, 211, 153, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(45, 212, 191, 0.02) 0%, transparent 50%);
+}
+
+.theme-la .sheikah-grid {
+  background-image:
+    linear-gradient(rgba(96, 165, 250, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(96, 165, 250, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.theme-la ::-webkit-progress-value {
+  background: linear-gradient(90deg, #60a5fa, #34d399) !important;
+}
+
+/* =============================================
+   VARIANTES DE TEMA – Link's Awakening
+   ============================================= */
+.theme-la.variant-mabe-village {
+  --color-gold: #34d399;
+  --color-gold-rgb: 52, 211, 153;
+  --color-gold-light: #6ee7b7;
+  --color-gold-dark: #059669;
+  --color-green-sage: #fbbf24;
+  --color-sage-rgb: 251, 191, 36;
+  --color-sheikah-glow: #34d399;
+  --color-glow-rgb: 52, 211, 153;
+  --color-border: rgba(52, 211, 153, 0.15);
+  --color-border-light: rgba(52, 211, 153, 0.3);
+  --color-bg-main: #070e0a;
+  --color-bg-card: rgba(10, 22, 16, 0.6);
+  --color-bg-card-hover: rgba(14, 30, 20, 0.8);
+  --theme-accent: #fbbf24;
+  --theme-accent-rgb: 251, 191, 36;
+}
+.theme-la.variant-mabe-village .sheikah-grid {
+  background-image: linear-gradient(rgba(52, 211, 153, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(52, 211, 153, 0.04) 1px, transparent 1px);
+  background-size: 46px 46px;
+}
+.theme-la.variant-mabe-village .theme-pattern-overlay {
+  background-image: radial-gradient(ellipse at 40% 30%, rgba(52, 211, 153, 0.04) 0%, transparent 50%), radial-gradient(ellipse at 70% 70%, rgba(251, 191, 36, 0.03) 0%, transparent 50%);
+}
+
+.theme-la.variant-animal-village {
+  --color-gold: #fbbf24;
+  --color-gold-rgb: 251, 191, 36;
+  --color-gold-light: #fde68a;
+  --color-gold-dark: #d97706;
+  --color-green-sage: #60a5fa;
+  --color-sage-rgb: 96, 165, 250;
+  --color-sheikah-glow: #fbbf24;
+  --color-glow-rgb: 251, 191, 36;
+  --color-border: rgba(251, 191, 36, 0.15);
+  --color-border-light: rgba(251, 191, 36, 0.3);
+  --color-bg-main: #0e0c06;
+  --color-bg-card: rgba(22, 18, 10, 0.6);
+  --color-bg-card-hover: rgba(30, 24, 14, 0.8);
+  --theme-accent: #60a5fa;
+  --theme-accent-rgb: 96, 165, 250;
+}
+.theme-la.variant-animal-village .sheikah-grid {
+  background-image: linear-gradient(rgba(251, 191, 36, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(251, 191, 36, 0.04) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+.theme-la.variant-animal-village .theme-pattern-overlay {
+  background-image: radial-gradient(ellipse at 60% 40%, rgba(251, 191, 36, 0.04) 0%, transparent 50%), radial-gradient(ellipse at 30% 70%, rgba(96, 165, 250, 0.03) 0%, transparent 50%);
+}
+
+.theme-la.variant-dream-shrine {
+  --color-gold: #a78bfa;
+  --color-gold-rgb: 167, 139, 250;
+  --color-gold-light: #c4b5fd;
+  --color-gold-dark: #7c3aed;
+  --color-green-sage: #22d3ee;
+  --color-sage-rgb: 34, 211, 238;
+  --color-sheikah-glow: #a78bfa;
+  --color-glow-rgb: 167, 139, 250;
+  --color-border: rgba(167, 139, 250, 0.15);
+  --color-border-light: rgba(167, 139, 250, 0.3);
+  --color-bg-main: #0a0614;
+  --color-bg-card: rgba(14, 10, 26, 0.6);
+  --color-bg-card-hover: rgba(20, 14, 36, 0.8);
+  --theme-accent: #22d3ee;
+  --theme-accent-rgb: 34, 211, 238;
+}
+.theme-la.variant-dream-shrine .sheikah-grid {
+  background-image: linear-gradient(rgba(167, 139, 250, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(167, 139, 250, 0.04) 1px, transparent 1px);
+  background-size: 42px 42px;
+}
+.theme-la.variant-dream-shrine .theme-pattern-overlay {
+  background-image: radial-gradient(ellipse at 50% 30%, rgba(167, 139, 250, 0.04) 0%, transparent 50%), radial-gradient(ellipse at 50% 70%, rgba(34, 211, 238, 0.03) 0%, transparent 50%);
+}
+
 body {
   margin: 0;
   font-family: var(--font-inter);
@@ -368,6 +504,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background: var(--color-bg-main);
   color: var(--color-text-main);
+  overflow-x: hidden;
 }
 
 html {
@@ -527,8 +664,13 @@ html {
 }
 
 .encyclopedia-card {
-  padding: 1.25rem 1.5rem;
+  padding: 1rem 1rem;
   transition: all 0.2s ease;
+}
+@media (min-width: 640px) {
+  .encyclopedia-card {
+    padding: 1.25rem 1.5rem;
+  }
 }
 .encyclopedia-card:hover {
   transform: scale(1.04);
@@ -539,9 +681,14 @@ html {
   filter: drop-shadow(0 0 8px rgba(var(--color-gold-rgb), 0.5));
 }
 .encyclopedia-card .encyclopedia-icon {
-  font-size: 1.75rem;
+  font-size: 1.25rem;
   line-height: 1;
   transition: transform 0.2s ease;
+}
+@media (min-width: 640px) {
+  .encyclopedia-card .encyclopedia-icon {
+    font-size: 1.75rem;
+  }
 }
 .encyclopedia-card:hover .encyclopedia-icon {
   transform: scale(1.2);
@@ -552,7 +699,12 @@ html {
   font-weight: 400;
 }
 .encyclopedia-card h3 {
-  font-size: 1.0625rem;
+  font-size: 0.9375rem;
+}
+@media (min-width: 640px) {
+  .encyclopedia-card h3 {
+    font-size: 1.0625rem;
+  }
 }
 .encyclopedia-card p {
   font-size: 0.8125rem;
@@ -565,4 +717,13 @@ html {
 .encyclopedia-grid .encyclopedia-card {
   width: 100%;
   height: 100%;
+}
+
+.encyclopedia-card .flex.items-start {
+  gap: 0.75rem;
+}
+@media (min-width: 640px) {
+  .encyclopedia-card .flex.items-start {
+    gap: 1.25rem;
+  }
 }

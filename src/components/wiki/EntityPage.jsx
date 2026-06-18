@@ -17,7 +17,7 @@ export function EntityPage({ type, fields }) {
   const segments = loc.pathname.split("/").filter(Boolean);
   const game = segments[0] || "oot";
   const { id } = useParams();
-  const gameFull = game === "oot" ? "ocarina-of-time" : "majoras-mask";
+  const gameFull = game === "oot" ? "ocarina-of-time" : game === "la" ? "links-awakening" : "majoras-mask";
   const data = gameData[gameFull];
   const isApiType = type === "apiMonsters";
   const [apiEntity, setApiEntity] = useState(null);
@@ -54,7 +54,7 @@ export function EntityPage({ type, fields }) {
     setLoading(true);
 
     const fetcher = fetchMonsters;
-    fetcher(GAME_NAMES[gameFull === "ocarina-of-time" ? "OOT" : "MM"])
+    fetcher(GAME_NAMES[gameFull === "ocarina-of-time" ? "OOT" : gameFull === "majoras-mask" ? "MM" : "LA"])
       .then((items) => {
         const found = items.find((i) => i.id === id);
         setApiEntity(found);

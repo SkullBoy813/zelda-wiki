@@ -12,7 +12,7 @@ export function ChecklistsPage() {
   const loc = useLocation();
   const segments = loc.pathname.split("/").filter(Boolean);
   const game = segments[0] || "oot";
-  const gameFull = game === "oot" ? "ocarina-of-time" : "majoras-mask";
+  const gameFull = game === "oot" ? "ocarina-of-time" : game === "la" ? "links-awakening" : "majoras-mask";
   usePageTitle(`Checklists — ${GAME_LABELS[gameFull]}`);
   const data = gameData[gameFull];
   const categories = progressCategories[gameFull] || [];

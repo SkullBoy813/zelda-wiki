@@ -4,7 +4,7 @@ export function Card({ children, className, glow, glass = true, ...props }) {
   return (
     <div
       className={cn(
-        "rounded-xl p-4 transition-all duration-300",
+        "rounded-xl p-3 sm:p-4 transition-all duration-300",
         glass && "glass hover:bg-[var(--color-bg-card-hover)]",
         glow && "glow-shadow-sm",
         className

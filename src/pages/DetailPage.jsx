@@ -7,6 +7,7 @@ export function ItemPage() {
     <EntityPage
       type="items"
       fields={[
+        { key: "era", label: "Era" },
         { key: "location", label: "Localização" },
         { key: "usage", label: "Utilização" },
         { key: "lore", label: "Curiosidades" },

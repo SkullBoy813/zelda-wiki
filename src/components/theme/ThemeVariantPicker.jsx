@@ -25,7 +25,7 @@ export function ThemeVariantPicker({ gameFull }) {
       {open && (
         <>
           <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
-          <div className="absolute right-0 top-full mt-2 z-50 w-56 glass rounded-xl border border-[var(--color-border)] p-3 shadow-xl">
+          <div className="absolute left-0 sm:right-0 sm:left-auto top-full mt-2 z-50 w-56 glass rounded-xl border border-[var(--color-border)] p-3 shadow-xl">
             <p className="text-[10px] text-[var(--color-text-dim)] uppercase tracking-wider mb-2">Variante de Tema</p>
             <div className="space-y-1">
               {Object.entries(gameVariants).map(([key, v]) => (
